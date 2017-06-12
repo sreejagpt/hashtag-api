@@ -1,8 +1,12 @@
 var Twitter = require('twitter');
 var env = require('dotenv').config().parsed;
+var express = require('express');
+var app = express();
 
+var TweetCounter = require('./actions/tweetCounter.js');
 var streamFilter = require('./streams/filters');
 var streamError = require('./streams/error');
+var currentHashtag = env.current_hashtag;
 
 var client = new Twitter({
   consumer_key: env.consumer_key,
@@ -11,12 +15,32 @@ var client = new Twitter({
   access_token_secret: env.access_token_secret
 });
 
+console.log(currentHashtag);
+
 var streamParameters = {
-  track: "#Sreeja",
+  track: currentHashtag
 };
 
+app.get('/count', function (req, res) {
+  res.send(TweetCounter.getCurrentTweetCount());
+});
+
+app.get('/reset', function(req, res) {
+  res.sendStatus(TweetCounter.resetTweetCount());
+});
+
 client.stream('statuses/filter', streamParameters, function (stream) {
-  console.log('attempting connection');
   stream.on('data', streamFilter);
   stream.on('error', streamError);
+});
+
+app.get('/', function (req, res) {
+  res.send("Welcome to hashtag-api. Visit /count to see number of mentions of " + currentHashtag);
+});
+
+var server = app.listen(8081, function () {
+  var host = server.address().address
+  var port = server.address().port
+
+  console.log("Example app listening at http://%s:%s", host, port)
 });
