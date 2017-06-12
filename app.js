@@ -38,6 +38,12 @@ app.get('/', function (req, res) {
   res.send("Welcome to hashtag-api. Visit /count to see number of mentions of " + currentHashtag);
 });
 
+app.get('/change-hashtag/:hashtag', function(req, res) {
+  var newHashtag = req.params.hashtag;
+  currentHashtag = '#' + newHashtag.trim();
+  res.send('Hashtag changed to ' + currentHashtag);
+});
+
 var server = app.listen(8081, function () {
   var host = server.address().address
   var port = server.address().port
