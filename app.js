@@ -1,8 +1,9 @@
 var Twitter = require('twitter');
 var env = require('dotenv').config().parsed || process.env;
-env = process.env;
 var express = require('express');
 var app = express();
+
+app.set('port', (env.PORT || 5000));
 
 var TweetCounter = require('./actions/tweetCounter.js');
 var streamFilter = require('./streams/filters');
@@ -19,8 +20,6 @@ var client = new Twitter({
 var streamParameters = {
   track: currentHashtag
 };
-
-console.log(env);
 
 app.get('/count', function (req, res) {
   res.send(TweetCounter.getCurrentTweetCount());
@@ -45,9 +44,6 @@ app.get('/change-hashtag/:hashtag', function(req, res) {
   res.send('Hashtag changed to ' + currentHashtag);
 });
 
-var server = app.listen(8081, function () {
-  var host = server.address().address
-  var port = server.address().port
-
-  console.log("Example app listening at http://%s:%s", host, port)
+app.listen(app.get('port'), function() {
+  console.log('Node app is running on port', app.get('port'));
 });
