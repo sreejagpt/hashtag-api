@@ -1,0 +1,28 @@
+{
+  "name": "hashtag-api",
+  "version": "0.0.1",
+  "description": "Periodically check Twitter Stream API for occurences of a configurable hashtag - exposed via REST API",
+  "main": "app.js",
+  "scripts": {
+    "start": "nodemon app.js",
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/sreejagpt/hashtag-api.git"
+  },
+  "author": "Sreeja Gupta",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sreejagpt/hashtag-api/issues"
+  },
+  "homepage": "https://github.com/sreejagpt/hashtag-api#readme",
+  "dependencies": {
+    "dotenv": "^4.0.0",
+    "express": "^4.15.3",
+    "twitter": "^1.7.0"
+  },
+  "devDependencies": {
+    "nodemon": "^1.11.0"
+  }
+}
