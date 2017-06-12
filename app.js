@@ -1,12 +1,12 @@
 var Twitter = require('twitter');
-var env = require('dotenv').config().parsed;
+var env = require('dotenv').config().parsed || process.env;
 var express = require('express');
 var app = express();
 
 var TweetCounter = require('./actions/tweetCounter.js');
 var streamFilter = require('./streams/filters');
 var streamError = require('./streams/error');
-var currentHashtag = env.current_hashtag;
+var currentHashtag = process.env.current_hashtag;
 
 var client = new Twitter({
   consumer_key: env.consumer_key,
@@ -14,8 +14,6 @@ var client = new Twitter({
   access_token_key: env.access_token_key,
   access_token_secret: env.access_token_secret
 });
-
-console.log(currentHashtag);
 
 var streamParameters = {
   track: currentHashtag
