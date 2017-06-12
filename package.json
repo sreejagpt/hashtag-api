@@ -4,7 +4,7 @@
   "description": "Periodically check Twitter Stream API for occurences of a configurable hashtag - exposed via REST API",
   "main": "app.js",
   "scripts": {
-    "start": "nodemon app.js",
+    "start": "node app.js",
     "test": "test"
   },
   "repository": {
