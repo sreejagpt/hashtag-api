@@ -20,6 +20,11 @@ var streamParameters = {
 
 var tweetCounter = 0;
 
+client.stream('statuses/filter', streamParameters, function (stream) {
+  stream.on('data', () => {tweetCounter++})
+  stream.on('error', streamError);
+});
+
 app.get('/count', function (req, res) {
   res.send(tweetCounter.toString());
 });
@@ -29,19 +34,14 @@ app.get('/reset', function(req, res) {
   res.sendStatus(200);
 });
 
-client.stream('statuses/filter', streamParameters, function (stream) {
-  tweetCounter++;
-  stream.on('error', streamError);
-});
-
-app.get('/change-hashtag/:hashtag', function(req, res) {
-  var newHashtag = req.params.hashtag;
-  currentHashtag = '#' + newHashtag.trim();
-  res.send('Hashtag changed to ' + currentHashtag);
-});
-
 app.get('/', function (req, res) {
-  res.send("Welcome to hashtag-api. Visit /count to see number of mentions of " + currentHashtag);
+  var welcomeHTML = "Welcome to hashtag-api." +
+  "<br/>Visit <b>/count</b> to see number of mentions of " + currentHashtag +
+  "<br/>Visit <b>/reset</b> to reset the current tweet count for whatever reason."
+
+  res.writeHead(200, { 'Content-Type': 'text/html' });
+  res.write(welcomeHTML);
+  res.end();
 });
 
 module.exports = app;
