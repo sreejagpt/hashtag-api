@@ -1,14 +1,11 @@
 var Twitter = require('twitter');
 var env = require('dotenv').config().parsed || process.env;
+var streamError = require('./streams/error');
+var currentHashtag = env.current_hashtag;
 var express = require('express');
 var app = express();
 
 app.set('port', (env.PORT || 5000));
-
-var TweetCounter = require('./actions/tweetCounter.js');
-var streamFilter = require('./streams/filters');
-var streamError = require('./streams/error');
-var currentHashtag = env.current_hashtag;
 
 var client = new Twitter({
   consumer_key: env.consumer_key,
@@ -21,21 +18,20 @@ var streamParameters = {
   track: currentHashtag
 };
 
+var tweetCounter = 0;
+
 app.get('/count', function (req, res) {
-  res.send(TweetCounter.getCurrentTweetCount());
+  res.send(tweetCounter.toString());
 });
 
 app.get('/reset', function(req, res) {
-  res.sendStatus(TweetCounter.resetTweetCount());
+  tweetCounter = 0;
+  res.sendStatus(200);
 });
 
 client.stream('statuses/filter', streamParameters, function (stream) {
-  stream.on('data', streamFilter);
+  tweetCounter++;
   stream.on('error', streamError);
-});
-
-app.get('/', function (req, res) {
-  res.send("Welcome to hashtag-api. Visit /count to see number of mentions of " + currentHashtag);
 });
 
 app.get('/change-hashtag/:hashtag', function(req, res) {
@@ -44,6 +40,8 @@ app.get('/change-hashtag/:hashtag', function(req, res) {
   res.send('Hashtag changed to ' + currentHashtag);
 });
 
-app.listen(app.get('port'), function() {
-  console.log('Node app is running on port', app.get('port'));
+app.get('/', function (req, res) {
+  res.send("Welcome to hashtag-api. Visit /count to see number of mentions of " + currentHashtag);
 });
+
+module.exports = app;

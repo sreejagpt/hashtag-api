@@ -2,9 +2,9 @@
   "name": "hashtag-api",
   "version": "0.0.1",
   "description": "Periodically check Twitter Stream API for occurences of a configurable hashtag - exposed via REST API",
-  "main": "app.js",
+  "main": "index.js",
   "scripts": {
-    "start": "node app.js",
+    "start": "node index.js",
     "test": "test"
   },
   "repository": {
