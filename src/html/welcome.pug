@@ -8,3 +8,9 @@ html(lang="en")
       Visit <b> /count </b> to see number of mention of <em>#{currentHashtag}</em>
     p.
       Visit <b>/rest</b> to rest the current tweet count for whatever reason
+
+    form(method='POST' action='/updateHashTag')
+      div
+        label(for='hashTag') HashTag:
+        input.form-control(type='text' id='hashTag' placeholder='hashTag' name='hashTag')
+      button.btn.btn-primary(type='submit') Update
