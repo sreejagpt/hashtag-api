@@ -20,44 +20,27 @@ var client = new Twitter({
 
 var stream = null;
 var tweetCounter = 0;
-var TwitWords = [];
-var initialized = false;
 
-// Tracker function
-function TrackWords(array){
-  if (initialized) {
-    console.log("=====================");
+function FollowHashTag(word){
+  if (stream != null) {
+    console.log("=============");
     console.log("destroyyyyyyy");
     stream.destroy();
   }
 
   console.log("==============");
-  console.log(array.toString());
-  stream = client.stream('statuses/filter',{track:array.toString()});
+  console.log(word);
+  currentHashtag = word;
+  tweetCounter = 0;
+  stream = client.stream('statuses/filter',{track: word});
   stream.on('data', function(event) {
-  console.log(event && event.text);
-});
+    tweetCounter++;
+    console.log(event && event.text);
+  });
 
   stream.on('error', function(error) {
     throw error;
   });
-  initialized = true;
-}
-
-// Add word
-function AddTwitWord(word){
-  if(TwitWords.indexOf(word)==-1){
-    TwitWords.push(word);
-    TrackWords(TwitWords);
-  }
-}
-
-// Remove word
-function RemoveTwitWord(word){
-  if(TwitWords.indexOf(word)!=-1){
-    TwitWords.splice(TwitWords.indexOf(word),1);
-    TrackWords(TwitWords);
-  }
 }
 
 app.get('/count', function (req, res) {
@@ -70,15 +53,15 @@ app.get('/reset', function(req, res) {
 });
 
 app.post('/updateHashTag',function(req, res) {
-  AddTwitWord(req.body.hashTag);
-  RemoveTwitWord(currentHashtag);
-  currentHashtag = req.body.hashTag;
-  tweetCounter = 0;
-  res.sendStatus(200);
+  FollowHashTag(req.body.hashTag);
+  res.redirect('/');
 });
 
 app.get('/', function (req, res) {
-  AddTwitWord(currentHashtag);
+  if (stream == null) {
+    FollowHashTag(currentHashtag);
+  }
+
   welcomeHTML = pug.renderFile(__dirname + '/html/welcome.pug',{currentHashtag})
   res.writeHead(200, { 'Content-Type': 'text/html' });
   res.write(welcomeHTML);
