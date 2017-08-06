@@ -1,9 +1,10 @@
 var Twitter = require('twitter');
 var env = require('dotenv').config().parsed || process.env;
 var streamError = require('./streams/error');
-var currentHashtag = env.current_hashtag;
 var express = require('express');
 var app = express();
+var pug = require('pug');
+var currentHashtag = env.CURRENT_HASHTAG;
 
 app.set('port', (env.PORT || 5000));
 
@@ -35,10 +36,7 @@ app.get('/reset', function(req, res) {
 });
 
 app.get('/', function (req, res) {
-  var welcomeHTML = "Welcome to hashtag-api." +
-  "<br/>Visit <b>/count</b> to see number of mentions of " + currentHashtag +
-  "<br/>Visit <b>/reset</b> to reset the current tweet count for whatever reason."
-
+  welcomeHTML = pug.renderFile(__dirname + '/html/welcome.pug',{currentHashtag})
   res.writeHead(200, { 'Content-Type': 'text/html' });
   res.write(welcomeHTML);
   res.end();
