@@ -8,10 +8,10 @@ var app = express();
 app.set('port', (env.PORT || 5000));
 
 var client = new Twitter({
-  consumer_key: env.consumer_key,
-  consumer_secret: env.consumer_secret,
-  access_token_key: env.access_token_key,
-  access_token_secret: env.access_token_secret
+  consumer_key: env.CONSUMER_KEY,
+  consumer_secret: env.CONSUMER_SECRET,
+  access_token_key: env.ACCESS_TOKEN_KEY,
+  access_token_secret: env.ACCESS_TOKEN_SECRET
 });
 
 var streamParameters = {
