@@ -37,7 +37,7 @@ app.post('/ringing', function (req, res) {
 })
 
 app.get('/count', function (req, res) {
-  res.send(currentCounter);
+  res.send(currentCounter.toString());
 });
 
 app.get('/reset', function(req, res) {
