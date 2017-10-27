@@ -5,7 +5,6 @@ var express = require('express');
 var app = express();
 var pug = require('pug');
 var currentHashtag = env.CURRENT_HASHTAG;
-var currentCounter = 0;
 
 app.set('port', (env.PORT || 5000));
 
@@ -21,6 +20,7 @@ var streamParameters = {
 };
 
 var tweetCounter = 0;
+var currentCounter = 0;
 
 client.stream('statuses/filter', streamParameters, function (stream) {
   stream.on('data', () => {tweetCounter++})
@@ -32,12 +32,12 @@ app.get('/tweet-count', function (req, res) {
 });
 
 app.post('/ringing', function (req, res) {
-  currentCounter++
-  res.sendStatus(202)
+  currentCounter++;
+  res.sendStatus(202);
 })
 
 app.get('/count', function (req, res) {
-  res.send(currentCounter)
+  res.send(currentCounter);
 });
 
 app.get('/reset', function(req, res) {
