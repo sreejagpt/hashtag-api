@@ -42,6 +42,7 @@ app.get('/count', function (req, res) {
 
 app.get('/reset', function(req, res) {
   tweetCounter = 0;
+  currentCounter = 0;
   res.sendStatus(200);
 });
 
