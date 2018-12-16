@@ -23,7 +23,10 @@ var tweetCounter = 0;
 var currentCounter = 0;
 
 client.stream('statuses/filter', streamParameters, function (stream) {
-  stream.on('data', () => {tweetCounter++})
+  stream.on('data', () => {
+    console.log('hashtag detected'); 
+    tweetCounter++;
+  })
   stream.on('error', streamError);
 });
 
