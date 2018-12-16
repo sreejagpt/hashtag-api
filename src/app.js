@@ -31,11 +31,6 @@ app.get('/tweet-count', function (req, res) {
   res.send(tweetCounter.toString());
 });
 
-app.post('/ringing', function (req, res) {
-  currentCounter++;
-  res.sendStatus(202);
-})
-
 app.get('/count', function (req, res) {
   res.send(currentCounter.toString());
 });
