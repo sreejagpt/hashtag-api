@@ -31,10 +31,6 @@ app.get('/tweet-count', function (req, res) {
   res.send(tweetCounter.toString());
 });
 
-app.get('/count', function (req, res) {
-  res.send(currentCounter.toString());
-});
-
 app.get('/reset', function(req, res) {
   tweetCounter = 0;
   currentCounter = 0;
